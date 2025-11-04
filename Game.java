@@ -1,3 +1,5 @@
+import java.util.Stack;
+
 /**
  *  This class is the main class of the "World of Zuul" application. 
  *  "World of Zuul" is a very simple, text based adventure game.  Users 
@@ -18,13 +20,14 @@
 public class Game 
 {
     private Parser parser;
-    private Room currentRoom;
+    private Player player;
         
     /**
      * Create the game and initialise its internal map.
      */
     public Game() 
     {
+        player = new Player();
         createRooms();
         parser = new Parser();
     }
@@ -34,30 +37,90 @@ public class Game
      */
     private void createRooms()
     {
-        Room outside, theater, pub, lab, office;
-      
-        // create the rooms
-        outside = new Room("outside the main entrance of the university");
-        theater = new Room("in a lecture theater");
-        pub = new Room("in the campus pub");
-        lab = new Room("in a computing lab");
-        office = new Room("in the computing admin office");
-        
-        // initialise room exits
-        outside.setExit("east", theater);
-        outside.setExit("south", lab);
-        outside.setExit("west", pub);
+        Room shire, oldForest, barrowDowns, breeGates, bree, prancingPony, rivendell, deadMarshes, blackGates, mordor, mountDoom, weatherTop, shelobsLair;
+        shire = new Room("You find yourself in Bag End, sitting at your table enjoying a nice cup of tea. \n" +
+                "Your very old friend Gandalf has entrusted your uncle's ring to you, and urges you to go on an adventure!", false);
+        oldForest = new Room("Surrounded by trees older than time itself, you find yourself further from The Shire than" +
+                "ever before. \nThe leaves on this path crinkle beneath your feet, and the mist clouds your judgement on which route to take.", false);
+        barrowDowns = new Room("Your eyes are enchanted by the endless tree-less hills in front of you. \nYou see a barrow nearby" +
+                " with some trinkets within your grasp. You don't know the history of this place, but its treasures may be of some use to you.", false);
+        breeGates = new Room("The large wooden gates of Bree, a town of men, stands before you. A voice seeps through the cracks " +
+                "asking you your business.\nYou remember that Gandalf was to meet you at the Prancing Pony, perhaps you should enter the town" +
+                "and take a look around.", false);
+        bree = new Room("Compared to The Shire, this is a busy place! Men three times your size are all around you, going about their business.\n" +
+                "In the distance, you see a sign for the Prancing Pony.", false);
+        prancingPony = new Room("They have pints! Among the many men, you spot your dear friend Gandalf, clothed in his gray robe.\n" +
+                "As you reminace about old tales, all others in the pub seem to fade out, and Gandalf becomes serious as he discusses" +
+                "the severity of the ring that has been entrusted with you, it seems you must make your way to its place of creation and destroy it." +
+                "\nHe talks about the journey you must take, and the long roads you'll endure going forward. Your mind grows slow, you sure hope you remembered to bring the ring.", false);
+        rivendell = new Room("It has been some days since you were at Bree. But, you find yourself in the last home of the elves; Rivendell!\n" +
+                "Enchanting music, tasty food, and wise council surround you. You know what you must do, but you think; staying here forever would be quite the blessing", false);
+        deadMarshes = new Room("Long from Rivendell have you gone, and it is apparent. Swampy marshes, filled with the corpses of fallen" +
+                " elves and men alike surround you. You hear a faint voice, 'don't follow the lights'.", false);
+        weatherTop = new Room("WeatherTop. You can see all of the plains from here. Though you know that means all eyes are also on you.\n" +
+                " There may be some items here, but it's best to keep moving. AND NO FIRES!", false);
+        shelobsLair = new Room("Shelob's Lair. A dark cave covered in massive spider webs. You see that if you drop your sword" +
+                " through some of these webs on the floor, you may be able to make it through unscathed.", false);
+        blackGates = new Room("Never before have you felt such evil. The massive black gates of mordor are in your sight.\n" +
+                " You know you cannot simply walk into Mordor. It seems the only option is to fight your way through, or find another way.", false);
+        mordor = new Room("Desolate, dry, and fire everywhere. This is Mordor, you can feel it. Every second that passes, you" +
+                " start to feel more ill, like this place is sapping the life away from you. This is no time to tarry.", false);
+        mountDoom = new Room("After what has felt like years, you find yourself in the place that the one ring was created.\n" +
+                "Mount Doom has been reached. You know that you must drop the ring into the fire, but why does it feel so heavy now?\n" +
+                "Turn back, or finish this. You know there are only two choices.", false);
 
-        theater.setExit("west", outside);
+        //Routes
+        shire.setExit("north", barrowDowns);
+        shire.setExit("east", oldForest);
+        barrowDowns.setExit("south", shire);
+        oldForest.setExit("west", shire);
+        oldForest.setExit("east", breeGates);
+        breeGates.setExit("west", oldForest);
+        breeGates.setExit("south", weatherTop);
+        weatherTop.setExit("north", breeGates);
+        breeGates.setExit("east", bree);
+        bree.setExit("west", breeGates);
+        bree.setExit("north", prancingPony);
+        prancingPony.setExit("south", bree);
+        bree.setExit("south", rivendell);
+        rivendell.setExit("north", bree);
+        rivendell.setExit("south", deadMarshes);
+        deadMarshes.setExit("north", rivendell);
+        deadMarshes.setExit("west", blackGates);
+        blackGates.setExit("east", deadMarshes);
+        deadMarshes.setExit("south", shelobsLair);
+        shelobsLair.setExit("north", deadMarshes);
+        blackGates.setExit("south", mordor);
+        mordor.setExit("north", blackGates);
+        shelobsLair.setExit("west", mordor);
+        mordor.setExit("east", shelobsLair);
+        mordor.setExit("west", mountDoom);
+        mountDoom.setExit("east", mordor);
 
-        pub.setExit("east", outside);
-
-        lab.setExit("north", outside);
-        lab.setExit("east", office);
-
-        office.setExit("west", lab);
-
-        currentRoom = outside;  // start game outside
+        //Items
+        //TODO Figure out a way to lock rooms && trigger endings for dropping the ring or leaving mt doom.
+        shire.addItem(new Item("the-one-ring", 1));
+        shire.addItem(new Item("handkerchief", 1));
+        shire.addItem(new Item("longbottom-leaf", 1));
+        barrowDowns.addItem(new Item("sword", 5));
+        barrowDowns.addItem(new Item("mithril-armor",10));
+        oldForest.addItem(new Item("mushrooms", 2));
+        weatherTop.addItem(new Item("torch", 2));
+        weatherTop.addItem(new Item("KingsFoil", 1));
+        bree.addItem(new Item("pony-food", 2));
+        prancingPony.addItem(new Item("pint-of-ale", 1));
+        prancingPony.addItem(new Item("meat", 3));
+        rivendell.addItem(new Item("healing-potion", 1));
+        rivendell.addItem(new Item("elven-harp", 10));
+        deadMarshes.addItem(new Item("severed-finger", 1));
+        deadMarshes.addItem(new Item("crow-meat", 2));
+        blackGates.addItem(new Item("cogwheel", 1));
+        blackGates.addItem(new Item("elven-cloak", 3));
+        shelobsLair.addItem(new Item("spider-silk", 1));
+        mordor.addItem(new Item("orc-draught", 1));
+        mordor.addItem(new Item("orc-armor", 10));
+        mountDoom.addItem(new Item("palantir", 5));
+        player.setCurrentRoom(shire);
     }
 
     /**
@@ -88,7 +151,7 @@ public class Game
         System.out.println("World of Zuul is a new, incredibly boring adventure game.");
         System.out.println("Type '" + CommandWord.HELP + "' if you need help.");
         System.out.println();
-        System.out.println(currentRoom.getLongDescription());
+        System.out.println(player.getCurrentRoom().getLongDescription());
     }
 
     /**
@@ -115,6 +178,18 @@ public class Game
                 goRoom(command);
                 break;
 
+            case BACK:
+                player.goBack();
+                break;
+
+            case TAKE:
+                takeItem(command);
+                break;
+
+            case DROP:
+                dropItem(command);
+                break;
+
             case QUIT:
                 wantToQuit = quit(command);
                 break;
@@ -138,6 +213,31 @@ public class Game
         parser.showCommands();
     }
 
+    private void takeItem(Command command) {
+        String itemDescription = command.getSecondWord();
+        Room currRoom = player.getCurrentRoom();
+        Item item = currRoom.findItem(itemDescription);
+        if(item == null) {
+            System.out.println("There is no " + itemDescription + " in this room!");
+            return;
+        }
+        player.addItem(item);
+        currRoom.removeItem(item);
+        System.out.println("You have picked up " + itemDescription);
+    }
+
+    private void dropItem(Command command) {
+        String itemDescription = command.getSecondWord();
+        Item item = player.findItem(itemDescription);
+        if(item == null) {
+            System.out.println("You are not carrying " + itemDescription);
+            return;
+        }
+        player.removeItem(item);
+        player.getCurrentRoom().addItem(item);
+        System.out.println("You have dropped " + itemDescription);
+    }
+
     /** 
      * Try to go in one direction. If there is an exit, enter the new
      * room, otherwise print an error message.
@@ -149,19 +249,8 @@ public class Game
             System.out.println("Go where?");
             return;
         }
-
         String direction = command.getSecondWord();
-
-        // Try to leave current room.
-        Room nextRoom = currentRoom.getExit(direction);
-
-        if (nextRoom == null) {
-            System.out.println("There is no door!");
-        }
-        else {
-            currentRoom = nextRoom;
-            System.out.println(currentRoom.getLongDescription());
-        }
+        player.moveRooms(direction);
     }
 
     /** 

@@ -1,6 +1,4 @@
-import java.util.Set;
-import java.util.HashMap;
-import java.util.Iterator;
+import java.util.*;
 
 /**
  * Class Room - a room in an adventure game.
@@ -20,6 +18,8 @@ public class Room
 {
     private String description;
     private HashMap<String, Room> exits;        // stores exits of this room.
+    private List<Item> roomItems;
+    private boolean isLocked;
 
     /**
      * Create a room described "description". Initially, it has
@@ -27,9 +27,11 @@ public class Room
      * "an open court yard".
      * @param description The room's description.
      */
-    public Room(String description) 
+    public Room(String description, boolean isLocked)
     {
         this.description = description;
+        this.isLocked = isLocked;
+        roomItems = new ArrayList<>();
         exits = new HashMap<>();
     }
 
@@ -60,7 +62,11 @@ public class Room
      */
     public String getLongDescription()
     {
-        return "You are " + description + ".\n" + getExitString();
+        String str = (roomItems.isEmpty()) ? "There are no items here!" : "Items in this room: ";
+        for(Item item : roomItems) {
+            str += item.getDescription() + ", ";
+        }
+        return description + "\n" + getExitString() + "\n" +  str;
     }
 
     /**
@@ -87,6 +93,26 @@ public class Room
     public Room getExit(String direction) 
     {
         return exits.get(direction);
+    }
+
+    public void addItem(Item item) {
+        roomItems.add(item);
+    }
+
+    public void removeItem(Item item) {
+        roomItems.remove(item);
+    }
+
+    public Item findItem(String itemDescription) {
+        return roomItems
+                .stream()
+                .filter(item -> item.getDescription().equals(itemDescription))
+                .findFirst()
+                .orElse(null);
+    }
+
+    public List<Item> getRoomItems() {
+        return roomItems;
     }
 }
 
