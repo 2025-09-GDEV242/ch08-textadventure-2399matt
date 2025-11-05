@@ -1,42 +1,38 @@
-import java.util.Stack;
-
 /**
- *  This class is the main class of the "World of Zuul" application. 
- *  "World of Zuul" is a very simple, text based adventure game.  Users 
- *  can walk around some scenery. That's all. It should really be extended 
- *  to make it more interesting!
- * 
- *  To play this game, create an instance of this class and call the "play"
- *  method.
- * 
- *  This main class creates and initialises all the others: it creates all
- *  rooms, creates the parser and starts the game.  It also evaluates and
- *  executes the commands that the parser returns.
- * 
- * @author  Michael Kölling and David J. Barnes
- * @version 2016.02.29
+ * This class is the main class of the "World of Zuul" application.
+ * "World of Zuul" is a very simple, text based adventure game.  Users
+ * can walk around some scenery. That's all. It should really be extended
+ * to make it more interesting!
+ * <p>
+ * To play this game, create an instance of this class and call the "play"
+ * method.
+ * <p>
+ * This main class creates and initialises all the others: it creates all
+ * rooms, creates the parser and starts the game.  It also evaluates and
+ * executes the commands that the parser returns.
+ *
+ * @author Matt Witham
+ * @author Michael Kölling and David J. Barnes
+ * @version 11.4.25
  */
 
-public class Game 
-{
+public class Game {
     private Parser parser;
     private Player player;
-        
+
     /**
      * Create the game and initialise its internal map.
      */
-    public Game() 
-    {
+    public Game() {
         player = new Player();
         createRooms();
         parser = new Parser();
     }
 
     /**
-     * Create all the rooms and link their exits together.
+     * Create all the rooms and link their exits together. Also sets all relevant items, lock status, and labels for the rooms.
      */
-    private void createRooms()
-    {
+    private void createRooms() {
         Room shire, oldForest, barrowDowns, breeGates, bree, prancingPony, rivendell, deadMarshes, blackGates, mordor, mountDoom, weatherTop, shelobsLair;
         shire = new Room("You find yourself in Bag End, sitting at your table enjoying a nice cup of tea. \n" +
                 "Your very old friend Gandalf has entrusted your uncle's ring to you, and urges you to go on an adventure!", false, RoomLabel.SHIRE);
@@ -59,8 +55,8 @@ public class Game
                 " elves and men alike surround you. You hear a faint voice, 'don't follow the lights'.", false, RoomLabel.DEADMARSHES);
         weatherTop = new Room("WeatherTop. You can see all of the plains from here. Though you know that means all eyes are also on you.\n" +
                 " There may be some items here, but it's best to keep moving. AND NO FIRES!", false, RoomLabel.WEATHERTOP);
-        shelobsLair = new Room("Shelob's Lair. A dark cave covered in massive spider webs. You see that if you drop your sword" +
-                " through some of these webs on the floor, you may be able to make it through unscathed.", false, RoomLabel.SHELOBSLAIR);
+        shelobsLair = new Room("Shelob's Lair. A dark cave covered in massive spider webs. Large beaty eyes are glowing in the dark.\n" +
+                "Given the orc corpses scattered around, only those who are armed will live through this place.", false, RoomLabel.SHELOBSLAIR);
         blackGates = new Room("Never before have you felt such evil. The massive black gates of mordor are in your sight.\n" +
                 " You know you cannot simply walk into Mordor. Surely it would take the likes of elven magic to pass through the gates to Mordor lying in the south!", false, RoomLabel.BLACKGATES);
         mordor = new Room("Desolate, dry, and fire everywhere. This is Mordor, you can feel it. Every second that passes, you" +
@@ -99,11 +95,11 @@ public class Game
         mountDoom.setExit("east", mordor);
 
         //Items
-        shire.addItem(new Item("the-one-ring", 1));
-        shire.addItem(new Item("inn-reservation", 1));
+        shire.addItem(new Item("the-one-ring", 1, ItemLabel.THE_ONE_RING));
+        shire.addItem(new Item("inn-reservation", 1, ItemLabel.INN_RESERVATION));
         shire.addItem(new Item("longbottom-leaf", 1));
-        barrowDowns.addItem(new Item("sword", 5));
-        barrowDowns.addItem(new Item("mithril-armor",10));
+        barrowDowns.addItem(new Item("sword", 5, ItemLabel.SWORD));
+        barrowDowns.addItem(new Item("mithril-armor", 10));
         oldForest.addItem(new Item("mushrooms", 2));
         weatherTop.addItem(new Item("torch", 2));
         weatherTop.addItem(new Item("KingsFoil", 1));
@@ -112,7 +108,7 @@ public class Game
         prancingPony.addItem(new Item("meat", 3));
         rivendell.addItem(new Item("healing-potion", 1));
         rivendell.addItem(new Item("elven-harp", 10));
-        rivendell.addItem(new Item("elven-cloak", 3));
+        rivendell.addItem(new Item("elven-cloak", 3, ItemLabel.ELVEN_CLOAK));
         deadMarshes.addItem(new Item("severed-finger", 1));
         deadMarshes.addItem(new Item("crow-meat", 2));
         blackGates.addItem(new Item("cogwheel", 1));
@@ -124,17 +120,16 @@ public class Game
     }
 
     /**
-     *  Main play routine.  Loops until end of play.
+     * Main play routine.  Loops until end of play.
      */
-    public void play() 
-    {            
+    public void play() {
         printWelcome();
 
         // Enter the main command loop.  Here we repeatedly read commands and
         // execute them until the game is over.
-                
+
         boolean finished = false;
-        while (! finished && !player.isHeroic()) {
+        while (!finished && !player.isHeroic()) {
             Command command = parser.getCommand();
             finished = processCommand(command);
         }
@@ -144,8 +139,7 @@ public class Game
     /**
      * Print out the opening message for the player.
      */
-    private void printWelcome()
-    {
+    private void printWelcome() {
         System.out.println();
         System.out.println("Welcome to the World of Zuul!");
         System.out.println("World of Zuul is a new, incredibly boring adventure game.");
@@ -156,11 +150,11 @@ public class Game
 
     /**
      * Given a command, process (that is: execute) the command.
+     *
      * @param command The command to be processed.
      * @return true If the command ends the game, false otherwise.
      */
-    private boolean processCommand(Command command) 
-    {
+    private boolean processCommand(Command command) {
         boolean wantToQuit = false;
 
         CommandWord commandWord = command.getCommandWord();
@@ -201,11 +195,10 @@ public class Game
 
     /**
      * Print out some help information.
-     * Here we print some stupid, cryptic message and a list of the 
+     * Here we print some stupid, cryptic message and a list of the
      * command words.
      */
-    private void printHelp() 
-    {
+    private void printHelp() {
         System.out.println("You are lost. You are alone. You wander");
         System.out.println("around at the university.");
         System.out.println();
@@ -213,11 +206,18 @@ public class Game
         parser.showCommands();
     }
 
+    /**
+     * Method to help with the take command. Asks the Player for the current room,
+     * and makes sure the room has it. If found, the item is added to the player's inventory
+     * and removed from the room.
+     *
+     * @param command The command from the player.
+     */
     private void takeItem(Command command) {
         String itemDescription = command.getSecondWord();
         Room currRoom = player.getCurrentRoom();
         Item item = currRoom.findItem(itemDescription);
-        if(item == null) {
+        if (item == null) {
             System.out.println("There is no " + itemDescription + " in this room!");
             return;
         }
@@ -226,10 +226,17 @@ public class Game
         System.out.println("You have picked up " + itemDescription);
     }
 
+    /**
+     * Method to help with the drop command.
+     * Searches the player's inventory for the item based on description. If found,
+     * the item is removed from the player's inventory and added to the room.
+     *
+     * @param command The command from the player.
+     */
     private void dropItem(Command command) {
         String itemDescription = command.getSecondWord();
         Item item = player.findItem(itemDescription);
-        if(item == null) {
+        if (item == null) {
             System.out.println("You are not carrying " + itemDescription);
             return;
         }
@@ -238,33 +245,77 @@ public class Game
         System.out.println("You have dropped " + itemDescription);
     }
 
-    /** 
+    /**
      * Try to go in one direction. If there is an exit, enter the new
      * room, otherwise print an error message.
      */
-    private void goRoom(Command command) 
-    {
-        if(!command.hasSecondWord()) {
+    private void goRoom(Command command) {
+        if (!command.hasSecondWord()) {
             // if there is no second word, we don't know where to go...
             System.out.println("Go where?");
             return;
         }
         String direction = command.getSecondWord();
-        player.moveRooms(direction);
+        Room nextRoom = player.getCurrentRoom().getExit(direction);
+        if (nextRoom == null) {
+            System.out.println("There is no path!");
+        } else if (nextRoom.isLocked()) {
+            handleLockedRoom(nextRoom);
+        } else {
+            player.moveRooms(nextRoom);
+        }
     }
 
-    /** 
+    /**
+     * Method to help with handling locked rooms.
+     * Checks the room id's of locked rooms to check for item conditions before the player can enter.
+     *
+     * @param nextRoom The room the player is trying to access.
+     */
+    private void handleLockedRoom(Room nextRoom) {
+        switch (nextRoom.getId()) {
+            case BREE:
+                if (player.findItemById(ItemLabel.INN_RESERVATION) != null) {
+                    nextRoom.setLocked(false);
+                    player.moveRooms(nextRoom);
+                } else {
+                    System.out.println("\nThe way is shut. It seems they are only accepting reservations!\n" +
+                            "you have a faint memory of Gandalf leaving a voucher for you somewhere...\n");
+                }
+                break;
+            case MORDOR:
+                if (player.getCurrentRoom().getId() == RoomLabel.SHELOBSLAIR) {
+                    if (player.findItemById(ItemLabel.SWORD) != null) {
+                        nextRoom.setLocked(false);
+                        System.out.println("\nTHANK GOODNESS FOR THE SWORD! THOSE WEBS STOOD NO CHANCE!\n\n");
+                        player.moveRooms(nextRoom);
+                    } else {
+                        System.out.println("\nThese webs are too thick! If only I had a sword..");
+                    }
+                } else {
+                    if (player.findItemById(ItemLabel.ELVEN_CLOAK) != null) {
+                        nextRoom.setLocked(false);
+                        System.out.println("\nTHAT ELVEN CLOAK WAS A LIFESAVER! *Seems one really can just walk into Mordor*\n\n");
+                        player.moveRooms(nextRoom);
+                    } else {
+                        System.out.println("\nAn elven cloak may provide the cover I need to pass through these gates!");
+                    }
+                }
+                break;
+        }
+    }
+
+    /**
      * "Quit" was entered. Check the rest of the command to see
      * whether we really quit the game.
+     *
      * @return true, if this command quits the game, false otherwise.
      */
-    private boolean quit(Command command) 
-    {
-        if(command.hasSecondWord()) {
+    private boolean quit(Command command) {
+        if (command.hasSecondWord()) {
             System.out.println("Quit what?");
             return false;
-        }
-        else {
+        } else {
             return true;  // signal that we want to quit
         }
     }
