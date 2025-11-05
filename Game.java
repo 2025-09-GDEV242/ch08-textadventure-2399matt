@@ -39,35 +39,36 @@ public class Game
     {
         Room shire, oldForest, barrowDowns, breeGates, bree, prancingPony, rivendell, deadMarshes, blackGates, mordor, mountDoom, weatherTop, shelobsLair;
         shire = new Room("You find yourself in Bag End, sitting at your table enjoying a nice cup of tea. \n" +
-                "Your very old friend Gandalf has entrusted your uncle's ring to you, and urges you to go on an adventure!", false);
+                "Your very old friend Gandalf has entrusted your uncle's ring to you, and urges you to go on an adventure!", false, RoomLabel.SHIRE);
         oldForest = new Room("Surrounded by trees older than time itself, you find yourself further from The Shire than" +
-                "ever before. \nThe leaves on this path crinkle beneath your feet, and the mist clouds your judgement on which route to take.", false);
+                "ever before. \nThe leaves on this path crinkle beneath your feet, and the mist clouds your judgement on which route to take.", false, RoomLabel.OLDFOREST);
         barrowDowns = new Room("Your eyes are enchanted by the endless tree-less hills in front of you. \nYou see a barrow nearby" +
-                " with some trinkets within your grasp. You don't know the history of this place, but its treasures may be of some use to you.", false);
+                " with some trinkets within your grasp. You don't know the history of this place, but its treasures may be of some use to you.", false, RoomLabel.BARROWDOWNS);
         breeGates = new Room("The large wooden gates of Bree, a town of men, stands before you. A voice seeps through the cracks " +
                 "asking you your business.\nYou remember that Gandalf was to meet you at the Prancing Pony, perhaps you should enter the town" +
-                "and take a look around.", false);
-        bree = new Room("Compared to The Shire, this is a busy place! Men three times your size are all around you, going about their business.\n" +
-                "In the distance, you see a sign for the Prancing Pony.", false);
+                "and take a look around.", false, RoomLabel.BREEGATES);
+        bree = new Room("Thank goodness for reservations! Compared to The Shire, this is a busy place! Men three times your size are all around you, going about their business.\n" +
+                "In the distance, you see a sign for the Prancing Pony.", true, RoomLabel.BREE);
         prancingPony = new Room("They have pints! Among the many men, you spot your dear friend Gandalf, clothed in his gray robe.\n" +
                 "As you reminace about old tales, all others in the pub seem to fade out, and Gandalf becomes serious as he discusses" +
                 "the severity of the ring that has been entrusted with you, it seems you must make your way to its place of creation and destroy it." +
-                "\nHe talks about the journey you must take, and the long roads you'll endure going forward. Your mind grows slow, you sure hope you remembered to bring the ring.", false);
+                "\nHe talks about the journey you must take, and the long roads you'll endure going forward. Your mind grows slow, you sure hope you remembered to bring the ring.", false, RoomLabel.PRANCINGPONY);
         rivendell = new Room("It has been some days since you were at Bree. But, you find yourself in the last home of the elves; Rivendell!\n" +
-                "Enchanting music, tasty food, and wise council surround you. You know what you must do, but you think; staying here forever would be quite the blessing", false);
+                "Enchanting music, tasty food, and wise council surround you. You know what you must do, but you think; staying here forever would be quite the blessing", false, RoomLabel.RIVENDELL);
         deadMarshes = new Room("Long from Rivendell have you gone, and it is apparent. Swampy marshes, filled with the corpses of fallen" +
-                " elves and men alike surround you. You hear a faint voice, 'don't follow the lights'.", false);
+                " elves and men alike surround you. You hear a faint voice, 'don't follow the lights'.", false, RoomLabel.DEADMARSHES);
         weatherTop = new Room("WeatherTop. You can see all of the plains from here. Though you know that means all eyes are also on you.\n" +
-                " There may be some items here, but it's best to keep moving. AND NO FIRES!", false);
+                " There may be some items here, but it's best to keep moving. AND NO FIRES!", false, RoomLabel.WEATHERTOP);
         shelobsLair = new Room("Shelob's Lair. A dark cave covered in massive spider webs. You see that if you drop your sword" +
-                " through some of these webs on the floor, you may be able to make it through unscathed.", false);
+                " through some of these webs on the floor, you may be able to make it through unscathed.", false, RoomLabel.SHELOBSLAIR);
         blackGates = new Room("Never before have you felt such evil. The massive black gates of mordor are in your sight.\n" +
-                " You know you cannot simply walk into Mordor. It seems the only option is to fight your way through, or find another way.", false);
+                " You know you cannot simply walk into Mordor. Surely it would take the likes of elven magic to pass through the gates to Mordor lying in the south!", false, RoomLabel.BLACKGATES);
         mordor = new Room("Desolate, dry, and fire everywhere. This is Mordor, you can feel it. Every second that passes, you" +
-                " start to feel more ill, like this place is sapping the life away from you. This is no time to tarry.", false);
+                " start to feel more ill, like this place is sapping the life away from you. This is no time to tarry.\n" +
+                "The peaks of Mount Doom lie to the west.", true, RoomLabel.MORDOR);
         mountDoom = new Room("After what has felt like years, you find yourself in the place that the one ring was created.\n" +
                 "Mount Doom has been reached. You know that you must drop the ring into the fire, but why does it feel so heavy now?\n" +
-                "Turn back, or finish this. You know there are only two choices.", false);
+                "Turn back, or finish this. You know there are only two choices.", false, RoomLabel.MOUNTDOOM);
 
         //Routes
         shire.setExit("north", barrowDowns);
@@ -98,9 +99,8 @@ public class Game
         mountDoom.setExit("east", mordor);
 
         //Items
-        //TODO Figure out a way to lock rooms && trigger endings for dropping the ring or leaving mt doom.
         shire.addItem(new Item("the-one-ring", 1));
-        shire.addItem(new Item("handkerchief", 1));
+        shire.addItem(new Item("inn-reservation", 1));
         shire.addItem(new Item("longbottom-leaf", 1));
         barrowDowns.addItem(new Item("sword", 5));
         barrowDowns.addItem(new Item("mithril-armor",10));
@@ -112,10 +112,10 @@ public class Game
         prancingPony.addItem(new Item("meat", 3));
         rivendell.addItem(new Item("healing-potion", 1));
         rivendell.addItem(new Item("elven-harp", 10));
+        rivendell.addItem(new Item("elven-cloak", 3));
         deadMarshes.addItem(new Item("severed-finger", 1));
         deadMarshes.addItem(new Item("crow-meat", 2));
         blackGates.addItem(new Item("cogwheel", 1));
-        blackGates.addItem(new Item("elven-cloak", 3));
         shelobsLair.addItem(new Item("spider-silk", 1));
         mordor.addItem(new Item("orc-draught", 1));
         mordor.addItem(new Item("orc-armor", 10));
@@ -134,7 +134,7 @@ public class Game
         // execute them until the game is over.
                 
         boolean finished = false;
-        while (! finished) {
+        while (! finished && !player.isHeroic()) {
             Command command = parser.getCommand();
             finished = processCommand(command);
         }

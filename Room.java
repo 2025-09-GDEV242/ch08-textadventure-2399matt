@@ -16,6 +16,7 @@ import java.util.*;
 
 public class Room 
 {
+    private RoomLabel id;
     private String description;
     private HashMap<String, Room> exits;        // stores exits of this room.
     private List<Item> roomItems;
@@ -27,8 +28,9 @@ public class Room
      * "an open court yard".
      * @param description The room's description.
      */
-    public Room(String description, boolean isLocked)
+    public Room(String description, boolean isLocked, RoomLabel id)
     {
+        this.id = id;
         this.description = description;
         this.isLocked = isLocked;
         roomItems = new ArrayList<>();
@@ -113,6 +115,18 @@ public class Room
 
     public List<Item> getRoomItems() {
         return roomItems;
+    }
+
+    public void setLocked(boolean locked) {
+        isLocked = locked;
+    }
+
+    public boolean isLocked() {
+        return isLocked;
+    }
+
+    public RoomLabel getId() {
+        return id;
     }
 }
 
