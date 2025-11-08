@@ -141,6 +141,19 @@ public class Room {
     }
 
     /**
+     * Helper method for the look command. Prints the description for each item currently in the room.
+     * @return The string representation for all of the items in the room.
+     */
+    public String printRoomItems() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Items in this room:\n");
+        for(Item item : roomItems) {
+            sb.append(item.getDescription()).append("\n");
+        }
+        return sb.toString();
+    }
+
+    /**
      * Returns the state of the lock on a room.
      *
      * @return The current status of the room being locked.

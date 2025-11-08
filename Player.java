@@ -128,6 +128,19 @@ public class Player {
     }
 
     /**
+     * Helper method for the inventory command. Prints out the description of each item that the player is currently holding.
+     * @return The string representation of all items held by the player.
+     */
+    public String getInventoryItems() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("You are currently holding:\n");
+        for(Item item : playerItems) {
+            sb.append(item.getDescription()).append("\n");
+        }
+        return sb.toString();
+    }
+
+    /**
      * Returns the current heroic state of the player.
      * If the player drops the ring in Mt. Doom, they are heroic
      * and will trigger the end of the game.

@@ -183,6 +183,11 @@ public class Game {
             case DROP:
                 dropItem(command);
                 break;
+            case INVENTORY:
+                player.getInventoryItems();
+                break;
+            case LOOK:
+
 
             case QUIT:
                 wantToQuit = quit(command);
