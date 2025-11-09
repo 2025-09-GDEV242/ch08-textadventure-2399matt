@@ -193,7 +193,8 @@ public class Game {
                 player.getInventoryItems();
                 break;
             case LOOK:
-
+                player.getCurrentRoom().printRoomItems();
+                break;
 
             case QUIT:
                 wantToQuit = quit(command);
