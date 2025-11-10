@@ -139,7 +139,7 @@ public class Player {
             return sb.toString();
         }
         for(Item item : playerItems) {
-            sb.append(item.getDescription()).append("\n");
+            sb.append(item.getDescription() + " Weight: " + item.getWeight()).append("\n");
         }
         return sb.toString();
     }

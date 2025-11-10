@@ -36,26 +36,50 @@ public class Item {
         this.id = label;
     }
 
+    /**
+     * Returns the description of the item.
+     * @return the description of the item. 
+     */
     public String getDescription() {
         return description;
     }
 
+    /**
+     * Sets the description of item.
+     * @param The description of the item.
+     */
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     * Returns the weight of a given item.
+     * @return the weight of the item.
+     */
     public int getWeight() {
         return weight;
     }
 
+    /**
+     * Sets the weight of an item. 
+     * @param The weight of the item.
+     */
     public void setWeight(int weight) {
         this.weight = weight;
     }
 
+    /**
+     * Returns the id of the item.
+     * @return the id of the item.
+     */
     public ItemLabel getId() {
         return id;
     }
 
+    /**
+     * Sets the id for an item.
+     * @param the id for the item.
+     */
     public void setId(ItemLabel id) {
         this.id = id;
     }

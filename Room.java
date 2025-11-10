@@ -66,9 +66,9 @@ public class Room {
      * @return A long description of this room
      */
     public String getLongDescription() {
-        String str = (roomItems.isEmpty()) ? "There are no items here!" : "Items in this room: ";
+        String str = (roomItems.isEmpty()) ? "There are no items here!" : "Items in this room: \n";
         for (Item item : roomItems) {
-            str += item.getDescription() + ", ";
+            str += item.getDescription() + " Weight: " + item.getWeight() + "\n";
         }
         return description + "\n" + getExitString() + "\n" + str;
     }
@@ -152,7 +152,7 @@ public class Room {
             return sb.toString();
         }
         for(Item item : roomItems) {
-            sb.append(item.getDescription()).append("\n");
+            sb.append(item.getDescription() + " Weight: " + item.getWeight() + "\n");
         }
         return sb.toString();
     }
