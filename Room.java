@@ -147,6 +147,10 @@ public class Room {
     public String printRoomItems() {
         StringBuilder sb = new StringBuilder();
         sb.append("Items in this room:\n");
+        if(roomItems.isEmpty()) {
+            sb.append("Nothing!");
+            return sb.toString();
+        }
         for(Item item : roomItems) {
             sb.append(item.getDescription()).append("\n");
         }

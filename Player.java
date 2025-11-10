@@ -134,6 +134,10 @@ public class Player {
     public String getInventoryItems() {
         StringBuilder sb = new StringBuilder();
         sb.append("You are currently holding:\n");
+        if(playerItems.isEmpty()) {
+            sb.append("Nothing!");
+            return sb.toString();
+        }
         for(Item item : playerItems) {
             sb.append(item.getDescription()).append("\n");
         }
