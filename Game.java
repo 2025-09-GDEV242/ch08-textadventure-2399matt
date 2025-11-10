@@ -190,10 +190,10 @@ public class Game {
                 dropItem(command);
                 break;
             case INVENTORY:
-                player.getInventoryItems();
+                System.out.println(player.getInventoryItems());
                 break;
             case LOOK:
-                player.getCurrentRoom().printRoomItems();
+                System.out.println(player.getCurrentRoom().printRoomItems());
                 break;
 
             case QUIT:
