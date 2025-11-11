@@ -1,0 +1,29 @@
+Room: Rooms are areas where the player can travel to and from. Each room has the following features:
+    •	Items: Rooms can have a multitude of items
+    •	Description: All rooms have a unique description.
+    •	Locked feature: Certain rooms will only allow the player to enter if they have an item that satisfies the condition. 
+    •	All rooms have a RoomLabel (id) for better equality checks when verifying the location of the player.
+
+Item: Items can be found in rooms by the player, at which point they can be picked up and stored in the player’s inventory. Item features:
+    •	Items have a description and weight. (Weight value is not used, only displayed).
+    •	Certain items have an id associated with them. These items are functional to the game in that they can unlock certain pathways to rooms if they are present in the player’s inventory.
+    •	Items can be dropped anywhere in the game. (If the item is “The One Ring” and it is dropped in the Mordor room, the game will end).
+
+Player: The player can hold as many items as they would like. The player is aware of what room they are currently in, as well as the rooms that they were previously in. Player features:
+    •	Inventory space (list of Item objects).
+    •	Knowledge of the current room.
+    •	Knowledge of previous rooms (implemented with a stack).
+    •	Heroic status (boolean flag for the game ending, is checked in the Game class).
+
+ItemLabel: Enum class used to store id values for specific items.
+
+RoomLabel: Enum class used to store id values for all rooms.
+
+
+
+Added Commands: LOOK, TAKE, INVENTORY, DROP, BACK. Descriptions:
+•	LOOK: allows the player to “look” for items in a room. Items in the room will be displayed for the player.
+•	TAKE: Allows the player to take an item from a room. This will remove the item from the room.
+•	INVENTORY: Allows the player to view all of the items that they are currently holding.
+•	DROP: Allows the player to drop an item from their inventory. The item will be placed in the room that it was dropped.
+•	BACK:  Allows the player to backtrack their steps, so long as they have a previous room.
